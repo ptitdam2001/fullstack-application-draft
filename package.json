@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "react-nest-template",
+  "name": "fullstack-application",
   "version": "1.0.0",
   "description": "Template to create a fullstack application based on React/Vite/NestJS",
   "main": "index.js",
@@ -15,6 +15,7 @@
     "build:core": "yarn workspace @stack/core build",
     "build:client:prod": "yarn workspace @stack/client build --mode production",
     "build:client:dev": "yarn workspace @stack/client build --mode development",
-    "build:server:prod": "yarn workspace @stack/server build"
+    "build:server:prod": "yarn workspace @stack/server build",
+    "start:server:prod": "yarn workspace @stack/server start:prod"
   }
 }
