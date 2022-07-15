@@ -1,44 +1,30 @@
+import { AppBar, Box, Button, CssBaseline, IconButton, Toolbar, Typography } from '@mui/material'
 import { useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
+import MenuIcon from '@mui/icons-material/Menu'
+import { Route, Routes } from 'react-router-dom'
+import { CalendarMainPage } from './Calendar/pages/main'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
-    </div>
+    <>
+      <CssBaseline />
+      <AppBar position="static">
+        <Toolbar>
+          <IconButton size="large" edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            Calendar
+          </Typography>
+          <Button color="inherit">Login</Button>
+        </Toolbar>
+      </AppBar>
+      <Box flex={1} display="flex" flexDirection="column" p={1}>
+        <Routes>
+          <Route path="/" element={<CalendarMainPage />} />
+        </Routes>
+      </Box>
+    </>
   )
 }
 
