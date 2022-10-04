@@ -4,7 +4,7 @@ import { AppService } from './app.service'
 import { CreateUserDto } from './interfaces'
 
 @Controller()
-export class AppController {
+export class UsersController {
   constructor(private readonly appService: AppService) {}
 
   @Post('user')
@@ -31,7 +31,25 @@ export class AppController {
   }
 
   @Get()
-  getHello(): string {
-    return this.appService.getHello()
+  public async getAll(): Promise<any> {
+    const response = await firstValueFrom(this.appService.getList())
+    if (response.status !== HttpStatus.OK) {
+      throw new HttpException(
+        {
+          message: response.message,
+          data: null,
+          errors: response.errors,
+        },
+        response.status,
+      )
+    }
+
+    return {
+      message: response.message,
+      data: {
+        users: response.user,
+      },
+      errors: null,
+    }
   }
 }

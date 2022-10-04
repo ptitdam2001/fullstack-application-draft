@@ -7,15 +7,15 @@ export class AppService {
   constructor(@Inject('USER_SERVICE') private client: ClientProxy) {}
 
   getItemById(id: number) {
-    return this.client.send({ cmd: 'user_get_byId' }, id)
+    return this.client.send('user_get_byId', id)
   }
 
   create(user: { email: string; password: string }) {
-    return this.client.send({ cmd: 'user_create' }, user)
+    return this.client.send('user_create', user)
   }
 
   getList() {
-    return this.client.send({ cmd: 'user_list' }, {})
+    return this.client.send('user_list', {})
   }
 
   getHello(): string {

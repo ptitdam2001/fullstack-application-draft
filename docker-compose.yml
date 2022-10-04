@@ -24,9 +24,11 @@ services:
   api:
     build:
       context: .
-      dockerfile: ./apps/server/Dockerfile
+      dockerfile: ./apps/api/Dockerfile
     ports:
       - 4000:4000
+    env_file:
+      - .env
     environment:
       REDIS_CLUSTER_URLS: 'redis_1:6379,redis_2:6379' #,redis_3:6379,redis_4:6379,redis_5:6379,redis_6:6379'
     depends_on:
@@ -40,7 +42,7 @@ services:
       - user
     stdin_open: true
     networks:
-      # nest_backend
+      nest_backend:
       redis_cluster_net:
         ipv4_address: 173.18.0.10
     # network_mode: host

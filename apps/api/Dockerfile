@@ -6,7 +6,7 @@ COPY package.json .
 COPY yarn.lock .
 
 COPY ./packages packages/
-COPY ./apps/server/package.json apps/server/
+COPY ./apps/api/package.json apps/api/
 
 RUN yarn install
 
@@ -14,8 +14,8 @@ RUN yarn install
 WORKDIR /base/packages/core
 RUN yarn build
 
-WORKDIR /base/apps/server
-COPY ./apps/server .
+WORKDIR /base/apps/api
+COPY ./apps/api .
 RUN yarn build
 
 FROM node:lts
@@ -28,8 +28,8 @@ COPY yarn.lock .
 COPY --from=builder /base/packages/core/package.json /webapp/packages/core/package.json
 COPY --from=builder /base/packages/core/dist /webapp/packages/core/dist
 
-COPY --from=builder /base/apps/server/package.json /webapp/packages/app/package.json
-COPY --from=builder /base/apps/server/dist/ /webapp/packages/app/dist/
+COPY --from=builder /base/apps/api/package.json /webapp/packages/app/package.json
+COPY --from=builder /base/apps/api/dist/ /webapp/packages/app/dist/
 
 ENV NODE_ENV production
 
