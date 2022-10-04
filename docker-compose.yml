@@ -1,6 +1,7 @@
 version: "3.9"
 
 volumes:
+  db_data: {}
   redis_1_data: {}
   redis_2_data: {}
   # redis_3_data: {}
@@ -20,7 +21,7 @@ services:
       - 8080:80
     # network_mode: host
 
-  server:
+  api:
     build:
       context: .
       dockerfile: ./apps/server/Dockerfile
@@ -36,11 +37,70 @@ services:
       # - redis_5
       # - redis_6
       - cluster_initiator
+      - user
     stdin_open: true
     networks:
+      # nest_backend
       redis_cluster_net:
         ipv4_address: 173.18.0.10
     # network_mode: host
+
+  user:
+    build:
+      context: .
+      dockerfile: ./apps/user/Dockerfile
+    restart: always
+    hostname: user
+    container_name: "user"
+    env_file:
+      - .env
+    depends_on:
+      - db
+    networks:
+      - nest_backend
+    environment:
+      SERVICE_DB_HOST: ${DATABASE_HOST}:27017
+      SERVICE_DB_USER: ${DATABASE_USERNAME}
+      SERVICE_DB_PASSWORD: ${DATABASE_PASSWORD}
+  
+  # Database service
+  db:
+    # pull image from docker hub
+    image: mongo
+    # container name
+    container_name: nestmongo
+    # always restart the container if it stops.
+    restart: always
+    # database credentials, this is take value from env file
+    environment:
+      MONGO_DATA_DIR: /data/db
+      MONGO_LOG_DIR: /dev/null
+      MONGO_INITDB_ROOT_DATABASE: ${DATABASE_NAME}
+      MONGO_INITDB_ROOT_USERNAME: ${DATABASE_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${DATABASE_PASSWORD}
+    # save (persist) data and also to share data between containers
+    volumes:
+      - db_data:/data/db
+    # database port
+    ports:
+      - "${DATABASE_PORT}:${DATABASE_PORT}"
+    # application network, each container for a service joins this network
+    networks:
+      - nest_backend
+
+  # authentication:
+  #   build: ./apps/authentication
+  #   restart: always
+  #   hostname: authentication
+  #   env_file:
+  #     - .env
+  #   networks:
+  #     - backend
+  #   # links:
+  #   #   - mailer
+  #   #   - db
+
+  
 
   # Here we have six Redis containers with Cluster mode enabled,
   # three of them will work as master nodes and each one of
@@ -71,21 +131,6 @@ services:
     networks:
       redis_cluster_net:
         ipv4_address: 173.18.0.3
-
-  # Database
-  # db:
-  #   image: mongo:latest
-  #   container_name: "notificationdb"
-  #   environment:
-  #     - MONGO_DATA_DIR=/data/db
-  #     - MONGO_LOG_DIR=/dev/null
-  #     - MONGO_DB=notification
-  #     - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME}
-  #     - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
-  #   volumes:
-  #     - ./data/db:/data/db
-  #   ports:
-  #     - 27017:27017
 
   # Ephemeral container to create the Redis cluster connections.
   # Once the setup is done, this container shuts down
@@ -127,9 +172,12 @@ services:
       redis_cluster_net:
         ipv4_address: 173.18.0.9
 
+
 # Rename the default network so we can easily identify it
 # Across all containers
 networks:
+  nest_backend:
+    driver: bridge
   redis_cluster_net:
     driver: bridge
     ipam:
