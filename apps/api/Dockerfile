@@ -37,5 +37,4 @@ RUN yarn install --pure-lockfile --non-interactive --production
 
 WORKDIR /webapp/packages/app
 
-# EXPOSE 4000
 CMD [ "yarn", "start:prod" ]
