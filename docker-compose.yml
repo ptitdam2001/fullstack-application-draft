@@ -25,6 +25,7 @@ services:
     build:
       context: .
       dockerfile: ./apps/api/Dockerfile
+      target: ProductionApi
     ports:
       - 4000:4000
     env_file:
