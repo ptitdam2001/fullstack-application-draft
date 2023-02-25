@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "fullstack-application",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "Template to create a fullstack application based on React/Vite/NestJS",
   "main": "index.js",
   "repository": "https://github.com/ptitdam2001/react-nest-template.git",
