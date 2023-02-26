@@ -2,15 +2,6 @@ version: "3.9"
 
 volumes:
   db_data: {}
-  redis_1_data: {}
-  redis_2_data: {}
-  # redis_3_data: {}
-  # redis_4_data: {}
-  # redis_5_data: {}
-  # redis_6_data: {}
-  # This volume is specific for the demo Express application
-  # built in this repo. You probably won't need that on your own setup.
-  # node_modules: {}
 
 services:
   client:
@@ -30,42 +21,13 @@ services:
       - 4000:4000
     env_file:
       - .env
-    environment:
-      REDIS_CLUSTER_URLS: 'redis_1:6379,redis_2:6379' #,redis_3:6379,redis_4:6379,redis_5:6379,redis_6:6379'
-    depends_on:
-      - redis_1
-      - redis_2
-      # - redis_3
-      # - redis_4
-      # - redis_5
-      # - redis_6
-      - cluster_initiator
-      - user
+
     stdin_open: true
     networks:
       nest_backend:
-      redis_cluster_net:
-        ipv4_address: 173.18.0.10
+
     # network_mode: host
 
-  user:
-    build:
-      context: .
-      dockerfile: ./apps/user/Dockerfile
-    restart: always
-    hostname: user
-    container_name: "user"
-    env_file:
-      - .env
-    depends_on:
-      - db
-    networks:
-      - nest_backend
-    environment:
-      SERVICE_DB_HOST: ${DATABASE_HOST}:27017
-      SERVICE_DB_USER: ${DATABASE_USERNAME}
-      SERVICE_DB_PASSWORD: ${DATABASE_PASSWORD}
-  
   # Database service
   db:
     # pull image from docker hub
@@ -91,99 +53,8 @@ services:
     networks:
       - nest_backend
 
-  # authentication:
-  #   build: ./apps/authentication
-  #   restart: always
-  #   hostname: authentication
-  #   env_file:
-  #     - .env
-  #   networks:
-  #     - backend
-  #   # links:
-  #   #   - mailer
-  #   #   - db
-
-  
-
-  # Here we have six Redis containers with Cluster mode enabled,
-  # three of them will work as master nodes and each one of
-  # will have a replica, so in case of failures, the replica becomes the master.
-  # They are configured by the `cluster_initiator` container.
-  redis_1:
-    image: 'redis:latest'
-    container_name: redis_1
-    ports:
-      - "6379"
-    volumes:
-      - redis_1_data:/data
-      - ./apps/store/redis.conf:/usr/local/etc/redis/redis.conf
-    command: [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
-    networks:
-      redis_cluster_net:
-        ipv4_address: 173.18.0.2
-
-  redis_2:
-    image: 'redis:latest'
-    container_name: redis_2
-    ports:
-      - "6379"
-    volumes:
-      - redis_2_data:/data
-      - ./apps/store/redis.conf:/usr/local/etc/redis/redis.conf
-    command: [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
-    networks:
-      redis_cluster_net:
-        ipv4_address: 173.18.0.3
-
-  # Ephemeral container to create the Redis cluster connections.
-  # Once the setup is done, this container shuts down
-  # and the cluster can be used by the service app container
-  cluster_initiator:
-    container_name: cluster_initiator
-    build:
-      context: apps/store/
-      dockerfile: Dockerfile
-    tty: true
-    depends_on:
-      - redis_1
-      - redis_2
-      # - redis_3
-      # - redis_4
-      # - redis_5
-      # - redis_6
-    networks:
-      redis_cluster_net:
-        ipv4_address: 173.18.0.8
-
-  # Web UI to browse through our Redis data across all nodes
-  redis_commander:
-    image: rediscommander/redis-commander:latest
-    container_name: redis_web
-    environment:
-      REDIS_HOSTS: "local:redis_1:6379,local:redis_2:6379,local:redis_3:6379"
-    ports:
-      - "8081:8081"
-    depends_on:
-      - redis_1
-      - redis_2
-      # - redis_3
-      # - redis_4
-      # - redis_5
-      # - redis_6
-      - cluster_initiator
-    networks:
-      redis_cluster_net:
-        ipv4_address: 173.18.0.9
-
-
 # Rename the default network so we can easily identify it
 # Across all containers
 networks:
   nest_backend:
     driver: bridge
-  redis_cluster_net:
-    driver: bridge
-    ipam:
-      driver: default
-      config:
-        - subnet: 173.18.0.0/16
