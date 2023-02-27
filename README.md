@@ -1,6 +1,20 @@
-# react-nest-template
+# Description
 
-A template : nestJS, reactJs, viteJS &amp; Typescript
+Mise en place d'une application avec les pages suivantes:
+- Formulaire de connexion
+- Accueil / Dashboard
+- Menu
+- Backoffice - React admin
+
+# Librairies utilisées
+
+- React
+- Material UI
+- React router
+- Vitejs
+- vitest
+- React admin
+- react hook form
 
 # Description
 
