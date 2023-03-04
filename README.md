@@ -15,6 +15,10 @@ Mise en place d'une application avec les pages suivantes:
 - vitest
 - React admin
 - react hook form
+- urql (https://formidable.com/open-source/urql/)[]
+- mswjs => mock server
+- @testing-library/react
+
 
 # Description
 

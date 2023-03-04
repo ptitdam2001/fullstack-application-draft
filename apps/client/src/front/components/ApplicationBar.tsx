@@ -1,6 +1,8 @@
 import { AppBar, Button, IconButton, Toolbar, Typography } from "@mui/material"
 import MenuIcon from '@mui/icons-material/Menu'
 
+import { Signout } from "@feature/Authentication"
+
 export const ApplicationBar = () => {
   return (
     <AppBar position="static">
@@ -11,7 +13,7 @@ export const ApplicationBar = () => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Main
           </Typography>
-          <Button color="inherit">Login</Button>
+          <Signout redirect="/signin"/>
         </Toolbar>
       </AppBar>
   )

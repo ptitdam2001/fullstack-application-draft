@@ -23,7 +23,7 @@ export default defineConfig({
       threads: false,
       reporters: ['default', 'junit'],
       outputFile: './test-results.xml',
-      setupFiles: ['./src/setupTests.ts'],
+      // setupFiles: ['./src/setupTests.ts'],
     },
     assetsInclude: ['/**/*.{png,jpg,gif,ico,svg}', '/css/*'],
     esbuild: {
