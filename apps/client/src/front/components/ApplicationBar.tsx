@@ -1,20 +1,19 @@
-import { AppBar, Button, IconButton, Toolbar, Typography } from "@mui/material"
-import MenuIcon from '@mui/icons-material/Menu'
-
-import { Signout } from "@feature/Authentication"
+import { MyProfilMenu, Signout } from "@feature/Authentication";
+import { Row, Col, Typography } from "antd";
 
 export const ApplicationBar = () => {
-  return (
-    <AppBar position="static">
-        <Toolbar>
-          <IconButton size="large" edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Main
-          </Typography>
-          <Signout redirect="/signin"/>
-        </Toolbar>
-      </AppBar>
-  )
-}
+	return (
+		<Row wrap={false} justify={"center"} align="middle">
+			<Col flex="auto">
+				<Typography.Title type="danger" level={2} style={{ marginTop: 0 }}>
+					Main
+				</Typography.Title>
+			</Col>
+			<Col flex="none">
+				<MyProfilMenu
+					otherMenuElements={[<Signout redirect="/auth/signin" />]}
+				/>
+			</Col>
+		</Row>
+	);
+};

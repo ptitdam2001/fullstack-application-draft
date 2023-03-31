@@ -24,7 +24,6 @@ export const AuthenticationProvider = ({ children, signinPath, connectedMainPath
   });
   const { data, fetching, error } = result;
 
-
   useEffect(() => {
     /** @todo - check user is authenticated - redirect to signin or main */
     if (!fetching && (error || !data)) {

@@ -1,32 +1,17 @@
-import React from 'react'
+import React from "react";
 
-import { ThemeProvider } from '@feature/Theme/components'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import { createClient, Provider } from 'urql';
+import { ThemeProvider } from "@feature/Theme/components";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import routes from './config/routes'
-import { getAuth } from '@feature/Authentication'
+import routes from "./config/routes";
+import { SnackbarProvider } from "notistack";
 
-const router = createBrowserRouter(routes)
-
-// GraphQL client
-const graphQLClient = createClient({
-  url: import.meta.env.VITE_GRAPHQL_URL,
-  fetchOptions: () => {
-    const sessionId= getAuth({});
-    if (sessionId) {
-      return {
-        headers: { authorization: `Bearer ${sessionId}` },
-      };
-    }
-    return {};
-  },
-});
+const router = createBrowserRouter(routes);
 
 export const MainApp = () => (
-  <ThemeProvider>
-  <Provider value={graphQLClient}>
-    <RouterProvider router={router} />
-  </Provider>
-</ThemeProvider>
-)
+	<ThemeProvider>
+		<SnackbarProvider>
+			<RouterProvider router={router} />
+		</SnackbarProvider>
+	</ThemeProvider>
+);

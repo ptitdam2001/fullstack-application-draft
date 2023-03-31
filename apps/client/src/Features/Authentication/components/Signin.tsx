@@ -1,62 +1,101 @@
-import { Button, Grid, TextField } from "@mui/material";
-import { useForm, Controller } from "react-hook-form"
-import { useNavigate } from "react-router-dom";
+import { Button, Input, Space, Typography } from "antd";
+import { useForm, Controller } from "react-hook-form";
 import { useMutation } from "urql";
 import { setAuth } from "../helpers";
+import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
+import { loginSchema } from "../config/validators";
+import { joiResolver } from '@hookform/resolvers/joi';
 
 type FormData = {
-  login: string;
-  password: string;
-}
+	login: string;
+	password: string;
+};
 
 const MUTATION_LOGIN = `mutation LoginMutation($login: String!, $password: String!) {
   Login(username: $login, password: $password) {
     sessionId
   }
-}`
+}`;
 
-export const Signin = () => {
-  const [result, doLogin] = useMutation(MUTATION_LOGIN)
-  const navigate = useNavigate();
+type Props = {
+	onConnectionDone: () => void;
+};
 
-  const { control, handleSubmit, formState: { errors } } = useForm<FormData>();
+export const Signin = ({ onConnectionDone }: Props) => {
+	const [result, doLogin] = useMutation(MUTATION_LOGIN);
 
-  const onSubmit = handleSubmit(async (data) => {
-    try {
-      const result = await doLogin(data);
-
-      if (result.error) {
-        console.log('Error Login:', result.error);
-      } else {
-        setAuth(result.data.sessionId);
-        navigate('/app');
-      }
-
-    } catch(err) {
-      console.log('Error Login:', err);
-    }
-
+	const {
+		control,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<FormData>({
+    mode: 'onBlur',
+    resolver: joiResolver(loginSchema),
   });
 
-  return (
-    <form onSubmit={onSubmit}>
-      <Grid container textAlign="center" spacing={2}>
-        <Grid item  xs={12} margin={2}>
-        <Controller name="login" rules={{required: true}} control={control} render={({ field }) =>  <TextField {...field} />} />
+	const onSubmit = handleSubmit(async (data) => {
+		try {
+			const result = await doLogin(data);
 
-        </Grid>
-        <Grid item xs={12} margin={2}>
-        <Controller name="password" rules={{ required: true  }} control={control} render={({ field }) => <TextField {...field} type="password" />} />
+			if (result.error) {
+				console.log("Error Login:", result.error);
+			} else {
+				setAuth(result.data.sessionId);
+				onConnectionDone();
+			}
+		} catch (err) {
+			console.log("Error Login:", err);
+		}
+	});
 
-        </Grid>
+	return (
+		<Space align="center">
+			<form onSubmit={onSubmit}>
+				<Space size={[8, 16]} direction="vertical">
+					<Controller
+						name="login"
+						control={control}
+						render={({ field, fieldState: { error } }) => (
+							<>
+								<Input {...field} />
 
-        <Grid item xs={12} margin={3}>
-        <Button type="submit" variant="outlined">Signin</Button>
+								{error && (
+									<Typography.Text type="danger">
+										{error.message}
+									</Typography.Text>
+								)}
+							</>
+						)}
+					/>
 
-        </Grid>
+					<Controller
+						name="password"
+						control={control}
+						render={({ field, fieldState: { error } }) => (
+							<>
+								<Input.Password
+									{...field}
+									iconRender={(visible) =>
+										visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+									}
+								/>
 
-      </Grid>
-    </form>
+								{error && (
+									<Typography.Text type="danger">
+										{error.message}
+									</Typography.Text>
+								)}
+							</>
+						)}
+					/>
 
-  )
-}
+					<Space size={[4, 8]} align="center">
+						<Button type="primary" htmlType="submit">
+							Signin
+						</Button>
+					</Space>
+				</Space>
+			</form>
+		</Space>
+	);
+};

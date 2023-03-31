@@ -1,6 +1,7 @@
 # Description
 
 Mise en place d'une application avec les pages suivantes:
+
 - Formulaire de connexion
 - Accueil / Dashboard
 - Menu
@@ -9,7 +10,7 @@ Mise en place d'une application avec les pages suivantes:
 # Librairies utilisées
 
 - React
-- Material UI
+- Antd design
 - React router
 - Vitejs
 - vitest
@@ -18,7 +19,7 @@ Mise en place d'une application avec les pages suivantes:
 - urql (https://formidable.com/open-source/urql/)[]
 - mswjs => mock server
 - @testing-library/react
-
+- notistack
 
 # Description
 
