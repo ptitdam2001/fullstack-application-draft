@@ -2,7 +2,7 @@ import { graphql } from "msw";
 
 export const handlers = [
 	// Handles a "Login" mutation
-	graphql.mutation("LoginMutation", (req, res, ctx) => {
+	graphql.mutation("Login", (req, res, ctx) => {
 		const { login } = req.variables;
 
 		sessionStorage.setItem("is-authenticated", login);

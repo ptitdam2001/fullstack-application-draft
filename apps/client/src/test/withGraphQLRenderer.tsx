@@ -2,20 +2,17 @@ import { render } from '@testing-library/react'
 import { GraphQLHandler, GraphQLRequest } from 'msw'
 
 import { server } from '../mocks/node'
-import { createClient, Provider } from 'urql'
+import { cacheExchange, Client, fetchExchange, Provider } from 'urql'
 import { ThemeProvider } from '@feature/Theme/components'
 
-const graphQLClient = createClient({
+const graphQLClient = new Client({
   url: import.meta.env.VITE_GRAPHQL_URL,
-  // fetchOptions: () => {
-
-  //   if (sessionId) {
-  //     return {
-  //       headers: { authorization: `Bearer ${sessionId}` },
-  //     };
-  //   }
-  //   return {};
-  // },
+  exchanges: [cacheExchange, fetchExchange],
+  fetchOptions: {
+    headers: {
+      'accept': '*/*',
+    },
+  },
 })
 
 type Props = {

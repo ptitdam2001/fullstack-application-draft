@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createClient, Provider } from "urql";
+import { cacheExchange, Client, debugExchange, fetchExchange, Provider } from "urql";
 import { getAuth } from "@feature/Authentication";
 
 import "./main.css";
@@ -9,22 +9,29 @@ import "./main.css";
 import serverMocker from "./mocks/server";
 import { MainApp } from "./MainApp";
 
-// GraphQL client
-const graphQLClient = createClient({
-	url: import.meta.env.VITE_GRAPHQL_URL,
-	fetchOptions: () => {
-		const sessionId = getAuth({});
-		if (sessionId) {
-			return {
-				headers: { authorization: `Bearer ${sessionId}` },
-			};
-		}
-		return {};
-	},
-});
-
 await serverMocker();
 
+// GraphQL client
+const graphQLClient = new Client({
+	url: import.meta.env.VITE_GRAPHQL_URL,
+  fetchOptions:() => {
+    const sessionId = getAuth({});
+    const anotherHeader = sessionId ? { authorization: `Bearer ${sessionId}` } : {};
+    return {
+      headers: {
+        ...anotherHeader,
+        accept: "*/*",
+      }
+    };
+  },
+  exchanges: [
+    debugExchange,
+    cacheExchange,
+    fetchExchange
+  ],
+});
+
+// rome-ignore lint/style/noNonNullAssertion: <explanation>
 ReactDOM.createRoot(document.getElementById("root")!).render(
 	<React.StrictMode>
 		<React.Suspense fallback="loading">

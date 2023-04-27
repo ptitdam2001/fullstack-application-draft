@@ -1,6 +1,6 @@
 import { Button, Input, Space, Typography } from "antd";
 import { useForm, Controller } from "react-hook-form";
-import { useMutation } from "urql";
+import { gql, useMutation, useQuery } from "urql";
 import { setAuth } from "../helpers";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import { loginSchema } from "../config/validators";
@@ -11,11 +11,13 @@ type FormData = {
 	password: string;
 };
 
-const MUTATION_LOGIN = `mutation LoginMutation($login: String!, $password: String!) {
-  Login(username: $login, password: $password) {
-    sessionId
+const MUTATION_LOGIN = gql`
+  mutation Login($login: String!, $password: String!) {
+    Login(username: $login, password: $password) {
+      sessionId
+    }
   }
-}`;
+`;
 
 type Props = {
 	onConnectionDone: () => void;
@@ -36,11 +38,10 @@ export const Signin = ({ onConnectionDone }: Props) => {
 	const onSubmit = handleSubmit(async (data) => {
 		try {
 			const result = await doLogin(data);
-
 			if (result.error) {
 				console.log("Error Login:", result.error);
 			} else {
-				setAuth(result.data.sessionId);
+				setAuth(result.data.login.sessionId);
 				onConnectionDone();
 			}
 		} catch (err) {
