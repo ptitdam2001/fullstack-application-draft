@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<testsuites name="vitest tests" tests="1" failures="0" errors="0" time="1.016">
-    <testsuite name="src/Features/Authentication/components/Signin.test.tsx" timestamp="2023-03-18T22:44:47.419Z" hostname="MacBook-Pro-de-Suhard-2.local" tests="1" failures="0" errors="0" skipped="0" time="0.048">
-        <testcase classname="src/Features/Authentication/components/Signin.test.tsx" name="Signin &gt; must a Sign in form" time="0.047">
-        </testcase>
-    </testsuite>
-</testsuites>
