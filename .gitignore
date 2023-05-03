@@ -34,6 +34,7 @@ VERSION
 
 # misc
 .DS_Store
+.yarn/
 
 # Logs
 logs
