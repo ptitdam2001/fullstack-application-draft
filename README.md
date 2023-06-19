@@ -10,7 +10,8 @@ Mise en place d'une application avec les pages suivantes:
 # Librairies utilisées
 
 - React
-- Antd design
+- tailwind Css
+- styled components
 - React router
 - Vitejs
 - vitest

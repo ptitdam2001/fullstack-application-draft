@@ -1,43 +1,41 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import { cacheExchange, Client, debugExchange, fetchExchange, Provider } from "urql";
-import { getAuth } from "@feature/Authentication";
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import { cacheExchange, Client, debugExchange, fetchExchange, Provider } from 'urql'
+import { getAuth } from '@feature/Authentication'
 
-import "./main.css";
+import '@fontsource/roboto'
+import '@fontsource/poppins'
+import './main.css'
 
 // For starting Mock GraphQL server
-import serverMocker from "./mocks/server";
-import { MainApp } from "./MainApp";
+import serverMocker from './mocks/server'
+import { MainApp } from './MainApp'
 
-await serverMocker();
+await serverMocker()
 
 // GraphQL client
 const graphQLClient = new Client({
-	url: import.meta.env.VITE_GRAPHQL_URL,
-  fetchOptions:() => {
-    const sessionId = getAuth({});
-    const anotherHeader = sessionId ? { authorization: `Bearer ${sessionId}` } : {};
+  url: import.meta.env.VITE_GRAPHQL_URL,
+  fetchOptions: () => {
+    const sessionId = getAuth({})
+    const anotherHeader = sessionId ? { authorization: `Bearer ${sessionId}` } : {}
     return {
       headers: {
         ...anotherHeader,
-        accept: "*/*",
-      }
-    };
+        accept: '*/*',
+      },
+    }
   },
-  exchanges: [
-    debugExchange,
-    cacheExchange,
-    fetchExchange
-  ],
-});
+  exchanges: [debugExchange, cacheExchange, fetchExchange],
+})
 
 // rome-ignore lint/style/noNonNullAssertion: <explanation>
-ReactDOM.createRoot(document.getElementById("root")!).render(
-	<React.StrictMode>
-		<React.Suspense fallback="loading">
-			<Provider value={graphQLClient}>
-				<MainApp />
-			</Provider>
-		</React.Suspense>
-	</React.StrictMode>,
-);
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <React.Suspense fallback="loading">
+      <Provider value={graphQLClient}>
+        <MainApp />
+      </Provider>
+    </React.Suspense>
+  </React.StrictMode>
+)

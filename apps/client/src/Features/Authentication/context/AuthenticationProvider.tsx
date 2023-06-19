@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom";
-import { useQuery } from 'urql';
+import { useCurrentUser } from "../hooks";
 
 type Props = {
   children: JSX.Element;
@@ -8,32 +8,20 @@ type Props = {
   connectedMainPath: string;
 }
 
-const queryCurrentClient = `query GetUserInfo {
-  result {
-    user {
-      username
-      firstName
-    }
-  }
-}`
-
 export const AuthenticationProvider = ({ children, signinPath, connectedMainPath }: Props) => {
   const navigate = useNavigate()
-  const [result, reexecuteQuery] = useQuery({
-    query: queryCurrentClient,
-  });
-  const { data, fetching, error } = result;
+  const {user, error, fetching } = useCurrentUser();
 
   useEffect(() => {
     /** @todo - check user is authenticated - redirect to signin or main */
-    if (!fetching && (error || !data)) {
+    if (!fetching && (error || !user)) {
       navigate(signinPath)
     }
 
-    if (!fetching && data) {
+    if (!fetching && user) {
       navigate(connectedMainPath)
     }
-  }, [error, fetching, data])
+  }, [error, fetching, user])
 
   if (fetching) {return <p>Loading...</p>;}
   if (error) {return <p>Oh no... {error.message}</p>;}

@@ -16,7 +16,6 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "paths": {
-      "@common/*": ["./src/Common/*"],
       "@feature/*": ["./src/Features/*"],
       "@front/*": ["./src/front/*"],
       "@testing/*": ["./src/test/*"],

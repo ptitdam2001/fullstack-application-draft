@@ -1,10 +1,9 @@
-import { NotFound } from "@common/components";
-import { RouteObject } from "react-router-dom";
-import { DefaultLayout, ConnectedLayout } from "@front/layout";
-import { Dashboard } from "@front/components";
-import { AuthLayout } from "@feature/Authentication/layout";
-import { Login, ResetPassword } from "@front/pages";
-import { MyProfileForm } from "@feature/Authentication";
+import { NotFound } from '@feature/Common'
+import { RouteObject } from 'react-router-dom'
+import { DefaultLayout, ConnectedLayout } from '@front/layout'
+import { Dashboard } from '@front/components'
+import { AuthLayout, MyProfileForm } from '@feature/Authentication'
+import { Login, ResetPassword } from '@front/pages'
 
 export default [
   {
@@ -24,9 +23,13 @@ export default [
           {
             path: 'my-profile',
             element: <MyProfileForm />,
-          }
-        ]
-      }
+          },
+          {
+            path: 'my-first-page',
+            element: <span>My first page</span>,
+          },
+        ],
+      },
     ],
   },
   {
@@ -42,8 +45,6 @@ export default [
         path: 'forgotten-password',
         element: <ResetPassword />,
       },
-
-    ]
-  }
-
+    ],
+  },
 ] as RouteObject[]
