@@ -39,4 +39,7 @@ export default defineConfig({
 	server: {
 		port: 8888,
 	},
+  css: {
+    devSourcemap: true,
+  }
 } as Partial<UserConfig>);
