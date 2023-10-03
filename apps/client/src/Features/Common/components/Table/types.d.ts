@@ -12,3 +12,9 @@ export type TableRowAction<T> = {
   onClick: (item: T) => void
   disable?: boolean | ((item: T) => boolean)
 }
+
+export type TablePaginationProps = {
+  currentPage: number
+  maxPage: number
+  onClick: (pageNumber: number) => void
+}

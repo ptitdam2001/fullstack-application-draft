@@ -1,3 +1,4 @@
+import { useId } from 'react'
 import { IconButton, PrimaryButton } from '../Buttons'
 import { Tooltip } from '../Tooltip'
 import { TableRowAction } from './types'
@@ -8,11 +9,12 @@ type Props<T> = {
 }
 
 export const RowActions = <T,>({ rowActions, row }: Props<T>) => {
+  const id = useId()
   if (rowActions.length === 0) {
     return null
   }
 
-  return rowActions.map(({ onClick, disable, icon, label }) => {
+  return rowActions.map(({ onClick, disable, icon, label }, index) => {
     const handleClick = () => onClick(row)
 
     let isDisabled = false
@@ -25,15 +27,15 @@ export const RowActions = <T,>({ rowActions, row }: Props<T>) => {
     if (icon) {
       if (label && !isDisabled) {
         return (
-          <Tooltip title={label} position="top">
+          <Tooltip title={label} position="top" key={`rowAction-${id}-${index}`}>
             <IconButton onClick={handleClick} icon={icon} size="small" disabled={isDisabled} />
           </Tooltip>
         )
       }
-      return <IconButton onClick={handleClick} icon={icon} size="small" disabled={isDisabled} />
+      return <IconButton onClick={handleClick} icon={icon} size="small" disabled={isDisabled} key={`rowAction-${id}-${index}`} />
     } else if (label) {
       return (
-        <PrimaryButton onClick={handleClick} disabled={isDisabled}>
+        <PrimaryButton onClick={handleClick} disabled={isDisabled} key={`rowAction-${id}-${index}`}>
           {label}
         </PrimaryButton>
       )

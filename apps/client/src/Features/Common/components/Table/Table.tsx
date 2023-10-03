@@ -1,6 +1,6 @@
 import { ReactElement } from 'react'
 import { TablePagination } from './Pagination'
-import { TableCol, TableRowAction } from './types'
+import { TableCol, TablePaginationProps, TableRowAction } from './types'
 import { RowActions } from './RowActions'
 
 type TableProps<T> = {
@@ -8,9 +8,10 @@ type TableProps<T> = {
   data: T[]
   title?: string | ReactElement
   rowActions?: TableRowAction<T>[]
+  pagination?: TablePaginationProps
 }
 
-const Table = <T extends { [k: string]: any }>({ columns, data, title, rowActions }: TableProps<T>) => (
+const Table = <T extends { [k: string]: any }>({ columns, data, title, rowActions, pagination }: TableProps<T>) => (
   <div className="container max-w-3xl px-4 mx-auto sm:px-8">
     <div className="py-8">
       <div className="flex flex-row justify-between w-full mb-1 sm:mb-0">
@@ -27,6 +28,7 @@ const Table = <T extends { [k: string]: any }>({ columns, data, title, rowAction
                     id={`col-${column.key}`}
                     scope="col"
                     className="px-5 py-3 text-sm text-left font-bold text-gray-800 uppercase bg-white border-b border-gray-200"
+                    key={`header-col-${column.key}`}
                   >
                     {column.label}
                   </th>
@@ -37,21 +39,21 @@ const Table = <T extends { [k: string]: any }>({ columns, data, title, rowAction
             </thead>
             <tbody>
               {data.map((line, index) => (
-                <tr key={index}>
-                  {columns.map(({ key, render }) => (
-                    <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
+                <tr key={`body-row-${index}`}>
+                  {columns.map(({ key, render }, colIndex) => (
+                    <td className="px-5 py-5 text-sm bg-white border-b border-gray-200" key={`body-row-${index}-col-${colIndex}`}>
                       {line[key] ? render?.(line) || <p className="text-gray-900 whitespace-no-wrap">{line[key]}</p> : null}
                     </td>
                   ))}
                   {/* Actions */}
-                  <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
+                  <td className="px-5 py-5 text-sm bg-white border-b border-gray-200" key={`row-action-${index}`}>
                     {rowActions && <RowActions<T> row={line} rowActions={rowActions} />}
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
-          <TablePagination />
+          {pagination && <TablePagination {...pagination} />}
         </div>
       </div>
     </div>
