@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { BaseInputProps } from './types'
+import { BaseInputProps, InputValueType } from './types'
 import React from 'react'
 
 export interface TextInputProps extends BaseInputProps {}

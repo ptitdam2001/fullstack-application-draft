@@ -10,9 +10,18 @@ export interface IconButtonProps {
   withBorder?: boolean
   size?: 'small' | 'medium' | 'large'
   className?: string
+  disabled?: boolean
 }
 
-export const IconButton = ({ onClick = () => {}, children, icon, withBorder = false, size = 'medium', className }: IconButtonProps) => {
+export const IconButton = ({
+  onClick = () => {},
+  children,
+  icon,
+  withBorder = false,
+  size = 'medium',
+  className,
+  disabled = false,
+}: IconButtonProps) => {
   const handleClick = useCallback(() => {
     onClick()
   }, [onClick])
@@ -39,6 +48,7 @@ export const IconButton = ({ onClick = () => {}, children, icon, withBorder = fa
           'border-solid border-2 border-primary shadow-md p-1': withBorder,
         }
       )}
+      disabled={disabled}
     >
       {icon ? <span className={classNames('flex p-1', iconSize)}>{icon}</span> : children}
     </button>

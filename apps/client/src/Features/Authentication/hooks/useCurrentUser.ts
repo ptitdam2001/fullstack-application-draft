@@ -1,24 +1,25 @@
-import { useQuery } from "urql";
+import { useQuery } from 'urql'
 
 const queryCurrentClient = `query GetUserInfo {
   result {
     user {
       username
       firstName
+      avatar
     }
   }
-}`;
+}`
 
 export const useCurrentUser = () => {
-	const [result, refetch] = useQuery({
-		query: queryCurrentClient,
-	});
-	const { data, fetching, error } = result;
+  const [result, refetch] = useQuery({
+    query: queryCurrentClient,
+  })
+  const { data, fetching, error } = result
 
-	return {
-		user: data?.user,
-		fetching,
-		error,
-		refetch,
-	};
-};
+  return {
+    user: data?.user,
+    fetching,
+    error,
+    refetch,
+  }
+}

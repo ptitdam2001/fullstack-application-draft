@@ -10,9 +10,19 @@ export interface PrimaryButtonProps {
   to?: string
   fullwidth?: boolean
   type?: 'button' | 'submit'
+  disabled?: boolean
 }
 
-export const PrimaryButton = ({ label, onClick = () => {}, children, icon, fullwidth = false, type = 'button', to }: PrimaryButtonProps) => {
+export const PrimaryButton = ({
+  label,
+  onClick = () => {},
+  children,
+  icon,
+  fullwidth = false,
+  type = 'button',
+  to,
+  disabled = false,
+}: PrimaryButtonProps) => {
   const handleClick = useCallback(() => {
     onClick()
   }, [onClick])
@@ -32,7 +42,7 @@ export const PrimaryButton = ({ label, onClick = () => {}, children, icon, fullw
   }
 
   return (
-    <button type={type} onClick={handleClick} className={classname}>
+    <button type={type} onClick={handleClick} className={classname} disabled={disabled}>
       {icon && <span className="mr-2">{icon}</span>}
       {children || label}
     </button>

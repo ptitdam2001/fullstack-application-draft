@@ -32,6 +32,10 @@ export const Signin = ({ onConnectionDone }: Props) => {
   } = useForm<FormData>({
     mode: 'onBlur',
     resolver: joiResolver(loginSchema),
+    defaultValues: {
+      login: '',
+      password: '',
+    },
   })
 
   const onSubmit = handleSubmit(async (data) => {
