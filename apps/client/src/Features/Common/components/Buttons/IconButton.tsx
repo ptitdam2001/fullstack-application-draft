@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import React, { useCallback, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { ReactElement } from 'react'
 
 export interface IconButtonProps {

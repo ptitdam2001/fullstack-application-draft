@@ -1,13 +1,15 @@
 import { useRouteError } from 'react-router-dom'
 
+type ErrorOutput = { statusText?: string; message?: string }
+
 export const NotFound = () => {
-  const error = useRouteError()
+  const { statusText = '', message = '' }: ErrorOutput = useRouteError() as ErrorOutput
 
   return (
     <span>
       <p>Page not found!</p>
       <p>
-        <i>{error.statusText || error.message}</i>
+        <i>{statusText || message}</i>
       </p>
     </span>
   )

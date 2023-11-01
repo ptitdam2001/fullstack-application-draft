@@ -1,10 +1,11 @@
 import classNames from 'classnames'
-import { BaseInputProps, InputValueType } from './types'
+import { BaseInputProps } from './types'
 import React from 'react'
 
 export interface TextInputProps extends BaseInputProps {}
 
-export const TextInput = React.forwardRef<HTMLInputElement, BaseInputProps>(({ label, id, name, className, error, required, ...args }, ref) => {
+export const TextInput = React.forwardRef<HTMLInputElement, BaseInputProps>((props, ref) => {
+  const { label, id, name, className, error, required, ...args } = props
   const inputId = id || name
   const inputErrorClass = error ? 'ring-red-500 ring-1' : ''
 

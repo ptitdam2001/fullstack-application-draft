@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta } from '@storybook/react'
 import { default as Table } from './Table'
 import { faker } from '@faker-js/faker'
 import { Close } from '../Icon'
@@ -37,7 +37,7 @@ const meta = {
 } satisfies Meta<typeof Table<DataType>>
 
 export default meta
-type Story = StoryObj<typeof meta>
+// type Story = StoryObj<typeof meta>
 
 export const SimpleUsage = () => {
   const [data, setData] = useState<DataType[]>(generateData(10))

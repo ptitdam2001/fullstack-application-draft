@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import React, { ReactElement, ReactNode, useCallback, useState } from 'react'
+import { ReactElement, ReactNode, useCallback, useState } from 'react'
 import { IconButton } from '../Buttons'
 import { Bars3, Close } from '../Icon'
 

@@ -5,16 +5,11 @@ import { Signin } from './Signin'
 
 describe('Signin', () => {
   const onConnectionDone = vi.fn()
-  const renderComponent = withGraphQLRenderer(<Signin onConnectionDone={onConnectionDone}/>, {wrapper: BrowserRouter})
+  const renderComponent = withGraphQLRenderer(<Signin onConnectionDone={onConnectionDone} />, { wrapper: BrowserRouter })
 
   it('must a Sign in form', () => {
-    const wrapper = renderComponent();
+    renderComponent()
 
-    expect(
-      screen.getByText(
-        /Signin/i
-      )
-    ).toBeInTheDocument()
-
+    expect(screen.getByText(/Signin/i)).toBeInTheDocument()
   })
 })

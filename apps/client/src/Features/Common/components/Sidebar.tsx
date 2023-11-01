@@ -1,28 +1,28 @@
 import { MenuItemProp } from '../../../types'
-import { v4 as uuid } from 'uuid'
+// import { v4 as uuid } from 'uuid'
 import { useNavigate } from 'react-router-dom'
-import { ReactNode } from 'react'
+// import { ReactNode } from 'react'
 import { LateralMenu } from './Menu'
 
-type MenuItem = {
-  key: string
-  icon?: ReactNode
-  children?: ReactNode
-  label: string
-  type: string
-  link: string
-}
+// type MenuItem = {
+//   key: string
+//   icon?: ReactNode
+//   children?: ReactNode
+//   label: string
+//   type: string
+//   link: string
+// }
 
-function getItem(item: MenuItemProp): MenuItem {
-  return {
-    key: uuid(),
-    icon: item.icon,
-    children: item.children ? item.children.map(getItem) : undefined,
-    label: item.label,
-    type: 'string',
-    link: item.link,
-  } as MenuItem
-}
+// function getItem(item: MenuItemProp): MenuItem {
+//   return {
+//     key: uuid(),
+//     icon: item.icon,
+//     children: item.children ? item.children.map(getItem) : undefined,
+//     label: item.label,
+//     type: 'string',
+//     link: item.link,
+//   } as MenuItem
+// }
 
 type Props = {
   menu: MenuItemProp[]

@@ -1,7 +1,7 @@
-import { EmailInput, PrimaryButton } from '@feature/Common'
+import { EmailInput, Form, FormField, PrimaryButton } from '@feature/Common'
 import { useSnackbar } from 'notistack'
-import { Controller, useForm } from 'react-hook-form'
 import { useMutation } from 'urql'
+import { forgotPasswordSchema } from '../config/validators'
 
 type FormData = {
   email: string
@@ -18,15 +18,10 @@ type Props = {
 }
 
 export const ResetPassword = ({ onSuccess }: Props) => {
-  const [result, doResetPassword] = useMutation(MUTATION_RESET_PASSWORD)
+  const [, doResetPassword] = useMutation(MUTATION_RESET_PASSWORD)
   const { enqueueSnackbar } = useSnackbar()
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormData>()
 
-  const onSubmit = handleSubmit(async (data) => {
+  const onSubmit = async (data: Partial<FormData>) => {
     try {
       const result = await doResetPassword(data)
 
@@ -50,18 +45,16 @@ export const ResetPassword = ({ onSuccess }: Props) => {
         variant: 'error',
       })
     }
-  })
+  }
 
   return (
-    <form onSubmit={onSubmit} className="flex flex-col p-2 gap-2">
-      <Controller
-        name="email"
-        rules={{ required: true }}
-        control={control}
-        render={({ field, fieldState: { error } }) => <EmailInput {...field} placeholder="Tape your email" required error={error?.message} />}
-      />
-
-      <PrimaryButton type="submit">Reinit.</PrimaryButton>
-    </form>
+    <Form<FormData> onSubmit={onSubmit} className="flex flex-col p-2 gap-2" validation={forgotPasswordSchema}>
+      <>
+        <FormField name="email">
+          {({ field, fieldState: { error } }) => <EmailInput {...field} placeholder="Tape your email" required error={error?.message} />}
+        </FormField>
+        <PrimaryButton type="submit">Reinit.</PrimaryButton>
+      </>
+    </Form>
   )
 }

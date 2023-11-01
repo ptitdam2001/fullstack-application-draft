@@ -1,6 +1,5 @@
-import { Avatar, Form, TextInput } from '@feature/Common/components'
+import { Avatar, Form, FormField, TextInput } from '@feature/Common/components'
 import { useCurrentUser } from '@feature/Authentication/hooks'
-import { Controller, useForm } from 'react-hook-form'
 
 type FormData = {
   userName: string
@@ -9,32 +8,24 @@ type FormData = {
 
 export const MyProfileForm = () => {
   const { user } = useCurrentUser()
-  const { control, handleSubmit } = useForm<FormData>({
-    mode: 'all',
-    defaultValues: user,
-  })
 
-  const onSubmit = handleSubmit((data) => {
+  const onSubmit = (data: Partial<FormData>) => {
     console.log('>>>>>> submit', data)
-  })
+  }
 
   console.log('----', user)
   return (
-    <Form name="profile" onSubmit={onSubmit}>
+    <Form<FormData> name="profile" onSubmit={onSubmit} defaultValues={user}>
       <>
         <Avatar size={100} shape="square" imgSrc={user.avatar} />
 
-        <Controller
-          name="userName"
-          control={control}
-          render={({ field, fieldState: { error } }) => <TextInput {...field} error={error?.message} required label="Username" />}
-        />
+        <FormField name="userName">
+          {({ field, fieldState: { error } }) => <TextInput {...field} error={error?.message} required label="Username" />}
+        </FormField>
 
-        <Controller
-          name="firstName"
-          control={control}
-          render={({ field, fieldState: { error } }) => <TextInput {...field} error={error?.message} required label="First name" />}
-        />
+        <FormField name="firstName">
+          {({ field, fieldState: { error } }) => <TextInput {...field} error={error?.message} required label="First name" />}
+        </FormField>
       </>
     </Form>
   )
