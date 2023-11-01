@@ -17,5 +17,6 @@
     "build:client:dev": "yarn workspace @stack/client build --mode development",
     "build:server:prod": "yarn workspace @stack/server build",
     "start:server:prod": "yarn workspace @stack/server start:prod"
-  }
+  },
+  "packageManager": "yarn@4.0.1"
 }

@@ -1,62 +1,62 @@
-import { graphql } from 'msw'
+import { graphql, HttpResponse } from 'msw'
 import { faker } from '@faker-js/faker'
 
 export const handlers = [
   // Handles a "Login" mutation
-  graphql.mutation('Login', (req, res, ctx) => {
+  graphql.mutation('Login', (req) => {
     const { login } = req.variables
 
     sessionStorage.setItem('is-authenticated', login)
-    return res(
-      ctx.data({
+    return HttpResponse.json({
+      data: {
         login: {
           sessionId: 'abc-123',
         },
-      })
-    )
+      },
+    })
   }),
 
-  graphql.query('Logout', (req, res, ctx) => {
+  graphql.query('Logout', () => {
     sessionStorage.removeItem('is-authenticated')
-    return res(
-      ctx.data({
+    return HttpResponse.json({
+      data: {
         logout: true,
-      })
-    )
+      },
+    })
   }),
 
   // Handles a "GetUserInfo" query
-  graphql.query('GetUserInfo', (req, res, ctx) => {
+  graphql.query('GetUserInfo', () => {
     const authenticatedUser = sessionStorage.getItem('is-authenticated')
     if (!authenticatedUser) {
       // When not authenticated, respond with an error
-      return res(
-        ctx.errors([
+      return HttpResponse.json({
+        errors: [
           {
             message: 'Not authenticated',
             errorType: 'AuthenticationError',
           },
-        ])
-      )
+        ],
+      })
     }
     // When authenticated, respond with a query payload
-    return res(
-      ctx.data({
+    return HttpResponse.json({
+      data: {
         user: {
           userName: authenticatedUser,
           firstName: faker.person.firstName(),
           avatar: faker.image.avatar(),
         },
-      })
-    )
+      },
+    })
   }),
 
-  graphql.mutation('ResetPasswordMutation', (req, res, ctx) => {
-    return res(
-      ctx.data({
+  graphql.mutation('ResetPasswordMutation', () => {
+    return HttpResponse.json({
+      data: {
         redirection: '/reset-paswword/auth_token_123',
         status: 'email_sent',
-      })
-    )
+      },
+    })
   }),
 ]

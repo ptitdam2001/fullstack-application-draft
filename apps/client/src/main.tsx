@@ -11,7 +11,9 @@ import './main.css'
 import serverMocker from './mocks/server'
 import { MainApp } from './MainApp'
 
-await serverMocker()
+if (import.meta.env.DEV) {
+  await serverMocker()
+}
 
 // GraphQL client
 const graphQLClient = new Client({
@@ -24,7 +26,7 @@ const graphQLClient = new Client({
         ...anotherHeader,
         accept: '*/*',
       },
-    }
+    } as RequestInit
   },
   exchanges: [debugExchange, cacheExchange, fetchExchange],
 })
